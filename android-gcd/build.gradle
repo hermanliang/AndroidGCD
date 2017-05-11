@@ -1,0 +1,114 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.hl'
+version = '0.2.0'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 25
+        versionCode 1
+        versionName version
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile 'com.parse.bolts:bolts-tasks:1.4.0'
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.sourceFiles
+}
+
+task androidBinaryJar(type: Jar, dependsOn: 'compileReleaseSources') {
+    from('build/intermediates/classes/release')
+    manifest {
+        attributes(
+                "Bundle-Name": project.name,
+                "Bundle-Version": project.version
+        )
+    }
+    exclude '**/R.class'
+    exclude '**/R\$*.class'
+    exclude '**/Manifest.class'
+    exclude '**/Manifest\$*.class'
+    exclude '**/BuildConfig.class'
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives androidBinaryJar
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name project.name
+            description 'Android GCD'
+            url 'https://github.com/hermanliang/AndroidGCD'
+            inceptionYear '2017'
+
+            packaging 'aar'
+            groupId project.group
+            artifactId project.name
+            version project.version
+
+            licenses {
+                license {
+                    name 'MIT'
+                    url 'https://github.com/hermanliang/AndroidGCD/blob/master/LICENSE'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                connection 'https://github.com/hermanliang/AndroidGCD.git'
+                url 'https://github.com/hermanliang/AndroidGCD'
+
+            }
+            developers {
+                developer {
+                    name 'Herman Liang'
+                }
+            }
+        }
+    }
+}
+
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        licenses = ['MIT']
+        websiteUrl = 'https://github.com/hermanliang/AndroidGCD'
+        issueTrackerUrl = 'https://github.com/hermanliang/AndroidGCD/issues'
+        vcsUrl = 'https://github.com/hermanliang/AndroidGCD.git'
+        version {
+            name = project.version
+            desc = 'Android GCD'
+            vcsTag = project.version
+            gpg {
+                sign = true
+            }
+        }
+    }
+}
