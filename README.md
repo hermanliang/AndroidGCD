@@ -50,13 +50,13 @@ DispatchQueue.global(groupId).sync(Callable);
 ### Add Task with Delay
 ```java
 // Run in UI queue with delay
-DispatchQueue.main().async(Callable, delayInMilliSeconds);
+DispatchQueue.main().asyncDelayed(Callable, delayInMilliSeconds);
 
 // Run in global background queue with delay
-DispatchQueue.global().async(Callable, delayInMilliSeconds);
+DispatchQueue.global().asyncDelayed(Callable, delayInMilliSeconds);
 
 // Run in specific background queue with delay
-DispatchQueue.global(groupId).async(Callable, delayInMilliSeconds);
+DispatchQueue.global(groupId).asyncDelayed(Callable, delayInMilliSeconds);
 ```
 
 ### Cancel Tasks in Queue
