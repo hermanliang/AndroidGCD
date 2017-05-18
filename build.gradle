@@ -11,10 +11,14 @@ buildscript {
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
     id "com.github.dcendents.android-maven" version "1.5"
+    id "com.jfrog.artifactory" version "4.4.17"
 }
 
 allprojects {
     repositories {
         jcenter()
     }
+
+    apply plugin: "com.jfrog.artifactory"
 }
+

@@ -3,7 +3,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.hl'
-version = '0.2.0'
+version = '0.2.1-SNAPSHOT'
 
 android {
     compileSdkVersion 25
@@ -109,6 +109,37 @@ bintray {
             gpg {
                 sign = true
             }
+        }
+    }
+}
+
+// apply plugin: 'maven-publish'
+
+// publishing {
+//    publications {
+//        aar(MavenPublication) {
+//            groupId project.group
+//            version project.version
+//            artifactId project.name
+
+//            artifact("build/outputs/aar/${project.name}-release.aar")
+//        }
+//    }
+// }
+
+artifactory {
+    contextUrl = 'https://oss.jfrog.org/artifactory'
+    publish {
+        repository {
+            repoKey = 'oss-snapshot-local'
+            username = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+            password = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+        }
+        defaults {
+            publishConfigs('archives')
+//            publications ('aar')
+//            properties = ['qa.level': 'basic', 'q.os': 'android']
+//            publishPom = true
         }
     }
 }
