@@ -4,6 +4,16 @@
 
 Using iOS-like Grand Central Dispatch (GCD) in Android. 
 
+## Setup
+
+Configure the dependency in Gradle
+
+```groovy
+dependencies {
+  compile 'com.hl:android-gcd:0.2.0'
+}
+```
+
 ## Usage
 
 ### Add Async Task to Queue
@@ -69,14 +79,6 @@ DispatchQueue.global().cancel();
 
 // Cancel all tasks in specific background queue
 DispatchQueue.global(groupId).cancel();
-```
-
-## Download
-
-```groovy
-dependencies {
-  compile 'com.hl:android-gcd:0.2.0'
-}
 ```
 
 ## Lincense
